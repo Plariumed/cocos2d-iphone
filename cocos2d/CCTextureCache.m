@@ -282,7 +282,13 @@ static CCTextureCache *sharedTextureCache;
 	if( ! tex ) {
 
 		ccResolutionType resolution;
-		NSString *fullpath = [fileUtils fullPathForFilename:path resolutionType:&resolution];
+        NSString *fullpath = nil;
+        if ([path isAbsolutePath]) {
+            fullpath = [fileUtils fullPathForFilenameIgnoringResolutions:path];
+        } else {
+            fullpath = [fileUtils fullPathForFilename:path resolutionType:&resolution];
+        }
+		 
 		if( ! fullpath ) {
 			CCLOG(@"cocos2d: Couldn't find file:%@", path);
 			return nil;

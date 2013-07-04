@@ -4737,6 +4737,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/build/Debug-iphonesimulator\"",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = cocos2d;
 				SKIP_INSTALL = YES;
@@ -4753,6 +4754,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_THUMB_SUPPORT = NO;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "cocos2d-documentation";
 			};
 			name = Debug;
@@ -4765,6 +4767,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DOXYGEN_PATH = /Applications/Doxygen.app/Contents/Resources/doxygen;
 				GCC_THUMB_SUPPORT = NO;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "cocos2d-documentation";
 				ZERO_LINK = NO;
 			};
@@ -4782,6 +4785,7 @@
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				HEADER_SEARCH_PATHS = external/Box2d;
 				INCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES = "";
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = box2d;
 				SKIP_INSTALL = YES;
 			};
@@ -4798,6 +4802,7 @@
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				HEADER_SEARCH_PATHS = external/Box2d;
 				INCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES = "";
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = box2d;
 				SKIP_INSTALL = YES;
@@ -4813,6 +4818,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_THUMB_SUPPORT = NO;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "build all libs";
 			};
 			name = Debug;
@@ -4839,6 +4845,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_THUMB_SUPPORT = NO;
 				HEADER_SEARCH_PATHS = external/Chipmunk/include/chipmunk;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = Chipmunk;
 				SKIP_INSTALL = YES;
 			};
@@ -4856,6 +4863,7 @@
 				);
 				GCC_THUMB_SUPPORT = NO;
 				HEADER_SEARCH_PATHS = external/Chipmunk/include/chipmunk;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = Chipmunk;
 				SKIP_INSTALL = YES;
@@ -4871,6 +4879,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_THUMB_SUPPORT = NO;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = CocosDenshion;
 				SKIP_INSTALL = YES;
 			};
@@ -4883,6 +4892,7 @@
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_THUMB_SUPPORT = NO;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = CocosDenshion;
 				SKIP_INSTALL = YES;
 				ZERO_LINK = NO;
@@ -4897,6 +4907,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_THUMB_SUPPORT = NO;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = CocosBuilderReader;
 				SKIP_INSTALL = YES;
 			};
@@ -4913,6 +4924,7 @@
 					NS_BLOCK_ASSERTIONS,
 				);
 				GCC_THUMB_SUPPORT = NO;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = CocosBuilderReader;
 				SKIP_INSTALL = YES;
@@ -4944,6 +4956,7 @@
 					"\"$(SRCROOT)/external/\"",
 					"\"$(SRCROOT)/external/JavaScript/SpiderMonkey/ios/lib\"",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = jsbindings;
 				SKIP_INSTALL = YES;
 			};
@@ -4971,6 +4984,7 @@
 					"\"$(SRCROOT)/external/\"",
 					"\"$(SRCROOT)/external/JavaScript/SpiderMonkey/ios/lib\"",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = jsbindings;
 				SKIP_INSTALL = YES;
 				ZERO_LINK = NO;
@@ -4985,6 +4999,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_THUMB_SUPPORT = NO;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = kazmath;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -4998,6 +5013,7 @@
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_THUMB_SUPPORT = NO;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = kazmath;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -5057,6 +5073,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/build/Debug-iphonesimulator\"",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = cocos2d_box2d;
 				SKIP_INSTALL = YES;
@@ -5114,6 +5131,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/build/Debug-iphonesimulator\"",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = cocos2d_chipmunk;
 				SKIP_INSTALL = YES;

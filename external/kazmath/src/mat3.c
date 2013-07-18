@@ -77,6 +77,8 @@ kmMat3* const kmMat3Adjugate(kmMat3* pOut, const kmMat3* pIn)
 
 	// XXX: pIn->mat[9] is invalid!
 //    pOut->mat[7] = pIn->mat[1] * pIn->mat[6] - pIn->mat[9] * pIn->mat[7];
+    
+    pOut->mat[7] = pIn->mat[1] * pIn->mat[6] - pIn->mat[0] * pIn->mat[7];
     pOut->mat[8] = pIn->mat[0] * pIn->mat[4] - pIn->mat[1] * pIn->mat[3];
 
     return pOut;

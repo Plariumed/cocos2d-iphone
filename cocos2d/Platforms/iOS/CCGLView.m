@@ -78,9 +78,15 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 #import "../../ccMacros.h"
 #import "../../CCConfiguration.h"
 #import "../../Support/OpenGL_Internal.h"
+#import "../../UIKit/TouchDrawerLayer.h"
 
 
 //CLASS IMPLEMENTATIONS:
+@interface CCGLView ()
+
+@property (nonatomic, retain) TouchDrawerLayer *touchDrawerLayer; //layer to show touches
+
+@end
 
 @interface CCGLView (Private)
 - (BOOL) setupSurfaceWithSharegroup:(EAGLSharegroup*)sharegroup;
@@ -146,6 +152,9 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 		}
 
 		CHECK_GL_ERROR_DEBUG();
+
+        self.touchDrawerLayer = [[[TouchDrawerLayer alloc] init] autorelease];
+        [self.layer insertSublayer:self.touchDrawerLayer above:self.layer];
 	}
 
 	return self;
@@ -208,6 +217,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 {
 	CCLOGINFO(@"cocos2d: deallocing %@", self);
 
+    self.touchDrawerLayer = nil;
 	[_renderer release];
 	[super dealloc];
 }
@@ -328,6 +338,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    [self.touchDrawerLayer touchesBegan:touches];
 	if(_touchDelegate)
 	{
 		[_touchDelegate touchesBegan:touches withEvent:event];
@@ -336,6 +347,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    [self.touchDrawerLayer touchesMoved:touches];
 	if(_touchDelegate)
 	{
 		[_touchDelegate touchesMoved:touches withEvent:event];
@@ -344,6 +356,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    [self.touchDrawerLayer touchesEnded:touches];
 	if(_touchDelegate)
 	{
 		[_touchDelegate touchesEnded:touches withEvent:event];

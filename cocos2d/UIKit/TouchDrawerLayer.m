@@ -42,6 +42,11 @@
         view.opaque = NO;
         view.layer.cornerRadius = 20;
         [touch.view addSubview:view];
+        if (self.imageDictionary.count >= 5) {
+            UIView *view = [self.imageDictionary.allValues objectAtIndex:0];
+            [view removeFromSuperview];
+            [self.imageDictionary removeObjectForKey:[self.imageDictionary.allKeys objectAtIndex:0]];
+        }
         [self.imageDictionary setObject:view forKey:touchId];
     }
 }
@@ -88,6 +93,8 @@
     for (UITouch *touch in touches) {
         [self removeImageForTouch:touch];
     }
+
+    
 }
 
 @end

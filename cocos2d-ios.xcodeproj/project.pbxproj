@@ -1184,7 +1184,6 @@
 		2B192834163361B10049A044 /* CCClippingNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCClippingNode.m; sourceTree = "<group>"; };
 		2C5FB50917DDFB8400B96F4C /* TouchDrawerLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchDrawerLayer.h; sourceTree = "<group>"; };
 		2C5FB50A17DDFB8400B96F4C /* TouchDrawerLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TouchDrawerLayer.m; sourceTree = "<group>"; };
-		2C5FB50D17DE1D2000B96F4C /* tapImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tapImage.png; sourceTree = "<group>"; };
 		2D500B920D5A79C200DBA0E3 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		2D500B990D5A79CF00DBA0E3 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		50150433113300F900A9CA65 /* CCProgressTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = CCProgressTimer.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -2014,7 +2013,6 @@
 		2C5FB50817DDFB8400B96F4C /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
-				2C5FB50D17DE1D2000B96F4C /* tapImage.png */,
 				2C5FB50917DDFB8400B96F4C /* TouchDrawerLayer.h */,
 				2C5FB50A17DDFB8400B96F4C /* TouchDrawerLayer.m */,
 			);

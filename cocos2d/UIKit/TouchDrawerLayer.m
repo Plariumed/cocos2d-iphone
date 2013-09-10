@@ -37,8 +37,9 @@
     UIView *view = [self.imageDictionary objectForKey:touchId];
     if (!view) {
         view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
-        view.backgroundColor = [UIColor grayColor];
+        view.backgroundColor = [UIColor colorWithWhite:1 alpha:0.7];
         view.center = [touch locationInView:touch.view];
+        view.opaque = NO;
         view.layer.cornerRadius = 20;
         [touch.view addSubview:view];
         [self.imageDictionary setObject:view forKey:touchId];
@@ -47,12 +48,16 @@
 
 - (void)removeImageForTouch:(UITouch *)touch
 {
-    NSString *touchId = @([touch hash]);
-    UIView *view = [self.imageDictionary objectForKey:touchId];
-    if (view) {
-        [view removeFromSuperview];
-        [self.imageDictionary removeObjectForKey:touchId];
-    }
+    double delayInSeconds = 0.5;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        NSString *touchId = @([touch hash]);
+        UIView *view = [self.imageDictionary objectForKey:touchId];
+        if (view) {
+            [view removeFromSuperview];
+            [self.imageDictionary removeObjectForKey:touchId];
+        }
+    });
 }
 
 - (void)moveImageForTouch:(UITouch *)touch

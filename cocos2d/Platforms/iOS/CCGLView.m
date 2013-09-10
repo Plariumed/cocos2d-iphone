@@ -364,6 +364,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 }
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    [self.touchDrawerLayer touchesEnded:touches];
 	if(_touchDelegate)
 	{
 		[_touchDelegate touchesCancelled:touches withEvent:event];

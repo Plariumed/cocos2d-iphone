@@ -41,6 +41,7 @@
         view.center = [touch locationInView:touch.view];
         view.opaque = NO;
         view.layer.cornerRadius = 20;
+        view.userInteractionEnabled = NO;
         [touch.view addSubview:view];
         if (self.imageDictionary.count >= 5) {
             UIView *view = [self.imageDictionary.allValues objectAtIndex:0];
@@ -93,8 +94,6 @@
     for (UITouch *touch in touches) {
         [self removeImageForTouch:touch];
     }
-
-    
 }
 
 @end

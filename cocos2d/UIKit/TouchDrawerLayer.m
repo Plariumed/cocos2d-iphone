@@ -11,6 +11,7 @@
 @interface TouchDrawerLayer()
 
 @property (nonatomic, retain) NSMutableDictionary *imageDictionary;
+@property (nonatomic, retain) NSMutableArray *images;
 
 @end
 
@@ -21,6 +22,7 @@
     self = [super init];
     if (self) {
         self.imageDictionary = [NSMutableDictionary dictionary];
+        self.images = [NSMutableArray array];
     }
     return self;
 }
@@ -28,7 +30,18 @@
 - (void)dealloc
 {
     self.imageDictionary = nil;
+    self.images = nil;
     [super dealloc];
+}
+
+- (UIView *)defaultView
+{
+    UIView *view = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 35, 35)] autorelease];
+    view.backgroundColor = [UIColor colorWithWhite:1 alpha:0.7];
+    view.opaque = NO;
+    view.layer.cornerRadius = 20;
+    view.userInteractionEnabled = NO;
+    return view;
 }
 
 - (void)addImageToForTouch:(UITouch *)touch
@@ -36,19 +49,24 @@
     NSString *touchId = @([touch hash]);
     UIView *view = [self.imageDictionary objectForKey:touchId];
     if (!view) {
-        view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
-        view.backgroundColor = [UIColor colorWithWhite:1 alpha:0.7];
-        view.center = [touch locationInView:touch.view];
-        view.opaque = NO;
-        view.layer.cornerRadius = 20;
-        view.userInteractionEnabled = NO;
-        [touch.view addSubview:view];
-        if (self.imageDictionary.count >= 5) {
-            UIView *view = [self.imageDictionary.allValues objectAtIndex:0];
-            [view removeFromSuperview];
-            [self.imageDictionary removeObjectForKey:[self.imageDictionary.allKeys objectAtIndex:0]];
+        view = [self.images lastObject];
+        if (view)
+        {
+            [self.imageDictionary setObject:view forKey:touchId];
+            [self.images removeLastObject];
         }
-        [self.imageDictionary setObject:view forKey:touchId];
+        else
+        {
+            view = [self defaultView];
+            [self.imageDictionary setObject:view forKey:touchId];
+        }
+        if (view.superview != touch.view)
+        {
+            [view removeFromSuperview];
+            [touch.view addSubview:view];
+        }
+        view.center = [touch locationInView:touch.view];
+        [view setHidden:NO];
     }
 }
 
@@ -60,7 +78,8 @@
         NSString *touchId = @([touch hash]);
         UIView *view = [self.imageDictionary objectForKey:touchId];
         if (view) {
-            [view removeFromSuperview];
+            [view setHidden:YES];
+            [self.images addObject:view];
             [self.imageDictionary removeObjectForKey:touchId];
         }
     });

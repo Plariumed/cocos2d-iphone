@@ -36,11 +36,13 @@ static GLuint	_ccCurrentProjectionMatrix = -1;
 static BOOL		_vertexAttribPosition = NO;
 static BOOL		_vertexAttribColor = NO;
 static BOOL		_vertexAttribTexCoords = NO;
+static BOOL		_ccGLBlendEnabled = NO;
 
 #if CC_ENABLE_GL_STATE_CACHE
 #define kCCMaxActiveTexture 16
 static GLuint	_ccCurrentShaderProgram = -1;
 static GLuint	_ccCurrentBoundTexture[kCCMaxActiveTexture] =  {-1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, };
+static GLuint	_ccCurrentActiveTextureUnit = -1;
 static GLenum	_ccBlendingSource = -1;
 static GLenum	_ccBlendingDest = -1;
 static ccGLServerState _ccGLServerState = 0;
@@ -93,9 +95,15 @@ void ccGLUseProgram( GLuint program )
 static void SetBlending(GLenum sfactor, GLenum dfactor)
 {
 	if(sfactor == GL_ONE && dfactor == GL_ZERO){
-		glDisable(GL_BLEND);
+        if (_ccGLBlendEnabled) {
+            glDisable(GL_BLEND);
+            _ccGLBlendEnabled = NO;
+        }
 	} else {
-		glEnable(GL_BLEND);
+        if (!_ccGLBlendEnabled) {
+            glEnable(GL_BLEND);
+            _ccGLBlendEnabled = YES;
+        }
 		glBlendFunc( sfactor, dfactor );
 	}
 }
@@ -143,7 +151,11 @@ void ccGLBindTexture2DN( GLuint textureUnit, GLuint textureId )
 	if( _ccCurrentBoundTexture[ textureUnit ] != textureId )
 	{
 		_ccCurrentBoundTexture[ textureUnit ] = textureId;
-		glActiveTexture( GL_TEXTURE0 + textureUnit );
+        if (_ccCurrentActiveTextureUnit != textureUnit)
+        {
+            glActiveTexture( GL_TEXTURE0 + textureUnit );
+            _ccCurrentActiveTextureUnit = textureUnit;
+        }
 		glBindTexture(GL_TEXTURE_2D, textureId );
 	}
 #else

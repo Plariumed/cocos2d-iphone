@@ -85,8 +85,13 @@
         _colorPointer =  malloc(sizeof(GLubyte) * _maxPoints * 2 * 4);
 
         // Set blend mode
-        _blendFunc.src = GL_SRC_ALPHA;
-		_blendFunc.dst = GL_ONE_MINUS_SRC_ALPHA;
+        if( !texture || ! [texture hasPremultipliedAlpha] ) {
+            _blendFunc.src = GL_SRC_ALPHA;
+            _blendFunc.dst = GL_ONE_MINUS_SRC_ALPHA;
+        } else {
+            _blendFunc.src = CC_BLEND_SRC;
+            _blendFunc.dst = CC_BLEND_DST;
+        }
 
 		// shader program
 		self.shaderProgram = [[CCShaderCache sharedShaderCache] programForKey:kCCShader_PositionTextureColor];
@@ -100,6 +105,11 @@
 }
 
 #pragma mark -
+
+- (CGPoint)position
+{
+    return _positionR;
+}
 
 - (void) setPosition:(CGPoint)position
 {

@@ -70,6 +70,7 @@
 #import "CCSpriteBatchNode.h"
 #import "CCSpriteFrameCache.h"
 
+#import "CCFontDefinition.h"
 #import "CCLabelTTF.h"
 #import "CCLabelBMFont.h"
 #import "CCLabelAtlas.h"

@@ -16,8 +16,6 @@
 		0529445E11098D6F00E500F3 /* CCProfiling.m in Sources */ = {isa = PBXBuildFile; fileRef = 0529445A11098D6F00E500F3 /* CCProfiling.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-checker"; }; };
 		2B192835163361B10049A044 /* CCClippingNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B192833163361B10049A044 /* CCClippingNode.h */; };
 		2B192836163361B10049A044 /* CCClippingNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B192834163361B10049A044 /* CCClippingNode.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-checker"; }; };
-		2C5FB50B17DDFB8400B96F4C /* TouchDrawerLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C5FB50917DDFB8400B96F4C /* TouchDrawerLayer.h */; };
-		2C5FB50C17DDFB8400B96F4C /* TouchDrawerLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C5FB50A17DDFB8400B96F4C /* TouchDrawerLayer.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-checker"; }; };
 		50150439113300F900A9CA65 /* CCProgressTimer.h in Headers */ = {isa = PBXBuildFile; fileRef = 50150433113300F900A9CA65 /* CCProgressTimer.h */; };
 		5015043A113300F900A9CA65 /* CCProgressTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 50150434113300F900A9CA65 /* CCProgressTimer.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-checker"; }; };
 		5015043B113300F900A9CA65 /* CCActionProgressTimer.h in Headers */ = {isa = PBXBuildFile; fileRef = 50150435113300F900A9CA65 /* CCActionProgressTimer.h */; };
@@ -1189,8 +1187,6 @@
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		2B192833163361B10049A044 /* CCClippingNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCClippingNode.h; sourceTree = "<group>"; };
 		2B192834163361B10049A044 /* CCClippingNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCClippingNode.m; sourceTree = "<group>"; };
-		2C5FB50917DDFB8400B96F4C /* TouchDrawerLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchDrawerLayer.h; sourceTree = "<group>"; };
-		2C5FB50A17DDFB8400B96F4C /* TouchDrawerLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TouchDrawerLayer.m; sourceTree = "<group>"; };
 		2D500B920D5A79C200DBA0E3 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		2D500B990D5A79CF00DBA0E3 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		50150433113300F900A9CA65 /* CCProgressTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = CCProgressTimer.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -2017,15 +2013,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		2C5FB50817DDFB8400B96F4C /* UIKit */ = {
-			isa = PBXGroup;
-			children = (
-				2C5FB50917DDFB8400B96F4C /* TouchDrawerLayer.h */,
-				2C5FB50A17DDFB8400B96F4C /* TouchDrawerLayer.m */,
-			);
-			path = UIKit;
-			sourceTree = "<group>";
-		};
 		501756090F335CE900624901 /* external */ = {
 			isa = PBXGroup;
 			children = (
@@ -2042,7 +2029,6 @@
 		5018F2510DFDEAFF00C013A5 /* cocos2d */ = {
 			isa = PBXGroup;
 			children = (
-				2C5FB50817DDFB8400B96F4C /* UIKit */,
 				50A24F010F3788C6007CAEB0 /* Base Nodes */,
 				A0DA0BC615BCDCAE00E80A92 /* Draw Nodes */,
 				506414C50F9C67C0007A7B24 /* Label Nodes */,
@@ -3310,7 +3296,6 @@
 				A0D7D9D115E2E730000CA0C4 /* CCPhysicsSprite.h in Headers */,
 				2B192835163361B10049A044 /* CCClippingNode.h in Headers */,
 				A003AC8C1657071100C7B792 /* ccFPSImages.h in Headers */,
-				2C5FB50B17DDFB8400B96F4C /* TouchDrawerLayer.h in Headers */,
 				01813A5A176A705D00A9D861 /* CCFontDefinition.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4171,7 +4156,6 @@
 				A0D7D9D215E2E730000CA0C4 /* CCPhysicsSprite.mm in Sources */,
 				2B192836163361B10049A044 /* CCClippingNode.m in Sources */,
 				A003AC8F16572D6000C7B792 /* ccFPSImages.m in Sources */,
-				2C5FB50C17DDFB8400B96F4C /* TouchDrawerLayer.m in Sources */,
 				01813A5B176A705D00A9D861 /* CCFontDefinition.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

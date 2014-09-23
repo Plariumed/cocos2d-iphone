@@ -24,7 +24,6 @@
  *
  */
 
-
 #import "CCFileUtils.h"
 #import "../CCConfiguration.h"
 #import "../ccMacros.h"
@@ -110,9 +109,14 @@ NSInteger ccLoadFileIntoMemory(const char *filename, unsigned char **out)
 #pragma mark - CCFileUtils
 
 @interface CCFileUtils()
+{
+    dispatch_queue_t _syncQueue;
+}
+
 -(NSString *) removeSuffix:(NSString*)suffix fromPath:(NSString*)path;
 -(BOOL) fileExistsAtPath:(NSString*)string withSuffix:(NSString*)suffix;
 -(void) buildSearchResolutionsOrder;
+
 @end
 
 @implementation CCFileUtils
@@ -138,6 +142,8 @@ NSInteger ccLoadFileIntoMemory(const char *filename, unsigned char **out)
 -(id) init
 {
 	if( (self=[super init])) {
+        _syncQueue = dispatch_queue_create("com.plariumed.fileutils", DISPATCH_QUEUE_SERIAL);
+        
 		_fileManager = [[NSFileManager alloc] init];
 
 		_fullPathCache = [[NSMutableDictionary alloc] initWithCapacity:30];
@@ -201,9 +207,11 @@ NSInteger ccLoadFileIntoMemory(const char *filename, unsigned char **out)
 
 -(void) purgeCachedEntries
 {
-	[_fullPathCache removeAllObjects];
-	[_fullPathNoResolutionsCache removeAllObjects];
-	[_removeSuffixCache removeAllObjects];
+    dispatch_sync(_syncQueue, ^{
+        [_fullPathCache removeAllObjects];
+        [_fullPathNoResolutionsCache removeAllObjects];
+        [_removeSuffixCache removeAllObjects];
+    });
 }
 
 - (void)dealloc
@@ -221,6 +229,8 @@ NSInteger ccLoadFileIntoMemory(const char *filename, unsigned char **out)
 	[_searchPath release];
 	[_filenameLookup release];
 	
+    dispatch_release(_syncQueue);
+    _syncQueue = nil;
 	[super dealloc];
 }
 
@@ -228,61 +238,63 @@ NSInteger ccLoadFileIntoMemory(const char *filename, unsigned char **out)
 {
 	NSInteger device = [[CCConfiguration sharedConfiguration] runningDevice];
 
-	[_searchResolutionsOrder removeAllObjects];
-	
+    dispatch_sync(_syncQueue, ^{
+        [_searchResolutionsOrder removeAllObjects];
+        
 #ifdef __CC_PLATFORM_IOS
-	if (device == kCCDeviceiPadRetinaDisplay)
-	{
-		[_searchResolutionsOrder addObject:kCCFileUtilsiPadHD];
-		[_searchResolutionsOrder addObject:kCCFileUtilsiPad];
-		if( _enableiPhoneResourcesOniPad ) {
-			[_searchResolutionsOrder addObject:kCCFileUtilsiPhone5HD];
-			[_searchResolutionsOrder addObject:kCCFileUtilsiPhoneHD];
-		}
-	}
-	else if (device == kCCDeviceiPad)
-	{
-		[_searchResolutionsOrder addObject:kCCFileUtilsiPad];
-		if( _enableiPhoneResourcesOniPad ) {
-			[_searchResolutionsOrder addObject:kCCFileUtilsiPhone5HD];
-			[_searchResolutionsOrder addObject:kCCFileUtilsiPhoneHD];
-		}
-	}
-	else if (device == kCCDeviceiPhone5RetinaDisplay)
-	{
-		[_searchResolutionsOrder addObject:kCCFileUtilsiPhone5HD];
-		[_searchResolutionsOrder addObject:kCCFileUtilsiPhoneHD];
-		[_searchResolutionsOrder addObject:kCCFileUtilsiPhone5];
-		[_searchResolutionsOrder addObject:kCCFileUtilsiPhone];
-	}
-	else if (device == kCCDeviceiPhoneRetinaDisplay)
-	{
-		[_searchResolutionsOrder addObject:kCCFileUtilsiPhoneHD];
-		[_searchResolutionsOrder addObject:kCCFileUtilsiPhone];
-	}
-	else if (device == kCCDeviceiPhone5)
-	{
-		[_searchResolutionsOrder addObject:kCCFileUtilsiPhone5];
-		[_searchResolutionsOrder addObject:kCCFileUtilsiPhone];
-	}
-	else if (device == kCCDeviceiPhone)
-	{
-		[_searchResolutionsOrder addObject:kCCFileUtilsiPhone];
-	}
-	
+        if (device == kCCDeviceiPadRetinaDisplay)
+        {
+            [_searchResolutionsOrder addObject:kCCFileUtilsiPadHD];
+            [_searchResolutionsOrder addObject:kCCFileUtilsiPad];
+            if( _enableiPhoneResourcesOniPad ) {
+                [_searchResolutionsOrder addObject:kCCFileUtilsiPhone5HD];
+                [_searchResolutionsOrder addObject:kCCFileUtilsiPhoneHD];
+            }
+        }
+        else if (device == kCCDeviceiPad)
+        {
+            [_searchResolutionsOrder addObject:kCCFileUtilsiPad];
+            if( _enableiPhoneResourcesOniPad ) {
+                [_searchResolutionsOrder addObject:kCCFileUtilsiPhone5HD];
+                [_searchResolutionsOrder addObject:kCCFileUtilsiPhoneHD];
+            }
+        }
+        else if (device == kCCDeviceiPhone5RetinaDisplay)
+        {
+            [_searchResolutionsOrder addObject:kCCFileUtilsiPhone5HD];
+            [_searchResolutionsOrder addObject:kCCFileUtilsiPhoneHD];
+            [_searchResolutionsOrder addObject:kCCFileUtilsiPhone5];
+            [_searchResolutionsOrder addObject:kCCFileUtilsiPhone];
+        }
+        else if (device == kCCDeviceiPhoneRetinaDisplay)
+        {
+            [_searchResolutionsOrder addObject:kCCFileUtilsiPhoneHD];
+            [_searchResolutionsOrder addObject:kCCFileUtilsiPhone];
+        }
+        else if (device == kCCDeviceiPhone5)
+        {
+            [_searchResolutionsOrder addObject:kCCFileUtilsiPhone5];
+            [_searchResolutionsOrder addObject:kCCFileUtilsiPhone];
+        }
+        else if (device == kCCDeviceiPhone)
+        {
+            [_searchResolutionsOrder addObject:kCCFileUtilsiPhone];
+        }
+        
 #elif defined(__CC_PLATFORM_MAC)
-	if (device == kCCDeviceMacRetinaDisplay)
-	{
-		[_searchResolutionsOrder addObject:kCCFileUtilsMacHD];
-		[_searchResolutionsOrder addObject:kCCFileUtilsMac];
-	}
-	else if (device == kCCDeviceMac)
-	{
-		[_searchResolutionsOrder addObject:kCCFileUtilsMac];
-	}
+        if (device == kCCDeviceMacRetinaDisplay)
+        {
+            [_searchResolutionsOrder addObject:kCCFileUtilsMacHD];
+            [_searchResolutionsOrder addObject:kCCFileUtilsMac];
+        }
+        else if (device == kCCDeviceMac)
+        {
+            [_searchResolutionsOrder addObject:kCCFileUtilsMac];
+        }
 #endif	
-	
-	[_searchResolutionsOrder addObject:kCCFileUtilsDefault];
+        
+        [_searchResolutionsOrder addObject:kCCFileUtilsDefault];
+    });
 }
 
 -(NSString*) pathForResource:(NSString*)resource ofType:(NSString *)ext inDirectory:(NSString *)subpath
@@ -436,17 +448,29 @@ NSInteger ccLoadFileIntoMemory(const char *filename, unsigned char **out)
 		return filename;
 
 	// Already cached ?
-	NSString* ret = [_fullPathNoResolutionsCache objectForKey:filename];
+    __block NSString* ret = nil;
+    dispatch_sync(_syncQueue, ^{
+        ret = [[_fullPathNoResolutionsCache objectForKey:filename] retain];
+    });
+    [ret autorelease];
 	if (ret)
 		return ret;
 	
 	// Lookup rules
-	NSString *newfilename = [_filenameLookup objectForKey:filename];
+    __block NSString *newfilename = nil;
+    dispatch_sync(_syncQueue, ^{
+        newfilename = [[_filenameLookup objectForKey:filename] retain];
+    });
+    [newfilename autorelease];
 	if( ! newfilename )
 		newfilename = filename;
 
-	
-	for( NSString *path in _searchPath ) {
+    __block NSArray *searchPath = nil;
+    dispatch_sync(_syncQueue, ^{
+        searchPath = [_searchPath copy];
+    });
+    [searchPath autorelease];
+	for( NSString *path in searchPath ) {
 		
 		ret = [path stringByAppendingPathComponent:newfilename];
 		
@@ -465,7 +489,9 @@ NSInteger ccLoadFileIntoMemory(const char *filename, unsigned char **out)
 
 	// Save in cache
 	if( ret )
-		[_fullPathNoResolutionsCache setObject:ret forKey:filename];
+        dispatch_sync(_syncQueue, ^{
+            [_fullPathNoResolutionsCache setObject:ret forKey:filename];
+        });
 	else
 		CCLOGINFO(@"cocos2d: CCFileUtils: file not found: %@", filename );
 	
@@ -498,37 +524,65 @@ NSInteger ccLoadFileIntoMemory(const char *filename, unsigned char **out)
 	}
 
 	// Already Cached ?
-	CCCacheValue *value = [_fullPathCache objectForKey:filename];
+    __block CCCacheValue *value = nil;
+    dispatch_sync(_syncQueue, ^{
+        value = [[_fullPathCache objectForKey:filename] retain];
+    });
+    [value autorelease];
 	if( value ) {
 		*resolutionType = value.resolutionType;
 		return value.fullpath;
 	}
 
 	// in Lookup Filename dictionary ?
-	NSString *newfilename = [_filenameLookup objectForKey:filename];
+    __block NSString *newfilename = nil;
+    dispatch_sync(_syncQueue, ^{
+        newfilename = [[_filenameLookup objectForKey:filename] retain];
+    });
+    [newfilename autorelease];
 	if( ! newfilename )
 		newfilename = filename;
 
 	BOOL found = NO;
 	NSString *ret = @"";
 	
-	for( NSString *path in _searchPath ) {
+    __block NSArray *searchPath = nil;
+    __block NSArray *searchResolutionsOrder = nil;
+    __block int searchMode = 0;
+    __block NSDictionary *suffixesDict = nil;
+    __block NSDictionary *directoriesDict = nil;
+    dispatch_sync(_syncQueue, ^{
+        searchPath = [_searchPath copy];
+        searchResolutionsOrder = [_searchResolutionsOrder copy];
+        searchMode = _searchMode;
+        if (searchMode == kCCFileUtilsSearchSuffixMode) {
+            suffixesDict = [_suffixesDict copy];
+        } else {
+            directoriesDict = [_directoriesDict copy];
+        }
+    });
+    [searchPath autorelease];
+    [searchResolutionsOrder autorelease];
+    [suffixesDict autorelease];
+    [directoriesDict autorelease];
+    
+	for( NSString *path in searchPath ) {
 		
 		// Search with Suffixes
-		for( NSString *device in _searchResolutionsOrder ) {
+		for( NSString *device in searchResolutionsOrder ) {
 
 			NSString *fileWithPath = [path stringByAppendingPathComponent:newfilename];
 			
-			if( _searchMode == kCCFileUtilsSearchSuffixMode ) {
+			if( searchMode == kCCFileUtilsSearchSuffixMode ) {
 				// Search using suffixes
-				NSString *suffix = [_suffixesDict objectForKey:device];
+				NSString *suffix = [suffixesDict objectForKey:device];
 				ret = [self getPathForFilename:fileWithPath withSuffix:suffix];
-				*resolutionType = [self resolutionTypeForKey:suffix inDictionary:_suffixesDict];
+				*resolutionType = [self resolutionTypeForKey:suffix inDictionary:suffixesDict];
 			} else {
 				// Search in subdirectories
-				NSString *directory = [_directoriesDict objectForKey:device];
+				NSString *directory = [directoriesDict objectForKey:device];
 				ret = [self getPathForFilename:newfilename withResourceDirectory:directory withSearchPath:path];
-				*resolutionType = [self resolutionTypeForKey:directory inDictionary:_directoriesDict];
+				*resolutionType = [self resolutionTypeForKey:directory inDictionary:directoriesDict];
 			}
 			
 			if( ret ) {
@@ -544,7 +598,9 @@ NSInteger ccLoadFileIntoMemory(const char *filename, unsigned char **out)
 
 	if( found ) {
 		value = [[CCCacheValue alloc] initWithFullPath:ret resolutionType:*resolutionType];
-		[_fullPathCache setObject:value forKey:filename];
+        dispatch_sync(_syncQueue, ^{
+            [_fullPathCache setObject:value forKey:filename];
+        });
 		[value release];
 	}
 	else
@@ -590,7 +646,9 @@ NSInteger ccLoadFileIntoMemory(const char *filename, unsigned char **out)
 		}
 		
 		NSMutableDictionary *filenames = [dict objectForKey:@"filenames"];
-		self.filenameLookup = filenames;
+        dispatch_sync(_syncQueue, ^{
+            self.filenameLookup = filenames;
+        });
 	}
 }
 
@@ -621,17 +679,23 @@ NSInteger ccLoadFileIntoMemory(const char *filename, unsigned char **out)
 
 -(void) setiPadRetinaDisplaySuffix:(NSString *)suffix
 {
-	[_suffixesDict setObject:suffix forKey:kCCFileUtilsiPadHD];
+    dispatch_sync(_syncQueue, ^{
+        [_suffixesDict setObject:suffix forKey:kCCFileUtilsiPadHD];
+    });
 }
 
 -(void) setiPadSuffix:(NSString *)suffix
 {
-	[_suffixesDict setObject:suffix forKey:kCCFileUtilsiPad];
+    dispatch_sync(_syncQueue, ^{
+        [_suffixesDict setObject:suffix forKey:kCCFileUtilsiPad];
+    });
 }
 
 -(void) setiPhoneRetinaDisplaySuffix:(NSString *)suffix
 {
-	[_suffixesDict setObject:suffix forKey:kCCFileUtilsiPhoneHD];
+    dispatch_sync(_syncQueue, ^{
+        [_suffixesDict setObject:suffix forKey:kCCFileUtilsiPhoneHD];
+    });
 }
 
 #endif // __CC_PLATFORM_IOS
@@ -668,9 +732,18 @@ NSInteger ccLoadFileIntoMemory(const char *filename, unsigned char **out)
 	
 	// Initial value should be non-nil
 	NSString *ret = @"";
-		
-	for( NSString *device in _searchResolutionsOrder ) {
-		NSString *suffix = [_suffixesDict objectForKey:device];
+
+    __block NSArray *searchResolutionsOrder = nil;
+    __block NSDictionary *suffixesDict = nil;
+    dispatch_sync(_syncQueue, ^{
+        searchResolutionsOrder = [_searchResolutionsOrder copy];
+        suffixesDict = [_suffixesDict copy];
+    });
+    [searchResolutionsOrder autorelease];
+    [suffixesDict autorelease];
+    
+	for( NSString *device in searchResolutionsOrder ) {
+		NSString *suffix = [suffixesDict objectForKey:device];
 		ret = [self removeSuffix:suffix fromPath:path];
 		
 		if( ret )
@@ -679,8 +752,9 @@ NSInteger ccLoadFileIntoMemory(const char *filename, unsigned char **out)
 	
 	if( ! ret )
 		ret = path;
-	
-	[_removeSuffixCache setObject:ret forKey:path];
+	dispatch_sync(_syncQueue, ^{
+        [_removeSuffixCache setObject:ret forKey:path];
+    });
 	
 	return ret;
 }
@@ -721,17 +795,32 @@ NSInteger ccLoadFileIntoMemory(const char *filename, unsigned char **out)
 
 -(BOOL) iPhoneRetinaDisplayFileExistsAtPath:(NSString*)path
 {
-	return [self fileExistsAtPath:path withSuffix:[_suffixesDict objectForKey:kCCFileUtilsiPhoneHD]];
+    __block NSString *suffix = nil;
+    dispatch_sync(_syncQueue, ^{
+        suffix = [[_suffixesDict objectForKey:kCCFileUtilsiPhoneHD] retain];
+    });
+    [suffix autorelease];
+	return [self fileExistsAtPath:path withSuffix:suffix];
 }
 
 -(BOOL) iPadFileExistsAtPath:(NSString*)path
 {
-	return [self fileExistsAtPath:path withSuffix:[_suffixesDict objectForKey:kCCFileUtilsiPad]];
+    __block NSString *suffix = nil;
+    dispatch_sync(_syncQueue, ^{
+        suffix = [[_suffixesDict objectForKey:kCCFileUtilsiPad] retain];
+    });
+    [suffix autorelease];
+	return [self fileExistsAtPath:path withSuffix:suffix];
 }
 
 -(BOOL) iPadRetinaDisplayFileExistsAtPath:(NSString*)path
 {
-	return [self fileExistsAtPath:path withSuffix:[_suffixesDict objectForKey:kCCFileUtilsiPadHD]];
+    __block NSString *suffix = nil;
+    dispatch_sync(_syncQueue, ^{
+        suffix = [[_suffixesDict objectForKey:kCCFileUtilsiPadHD] retain];
+    });
+    [suffix autorelease];
+	return [self fileExistsAtPath:path withSuffix:suffix];
 }
 
 #endif // __CC_PLATFORM_IOS

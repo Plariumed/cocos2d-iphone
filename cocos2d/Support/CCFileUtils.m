@@ -726,7 +726,11 @@ NSInteger ccLoadFileIntoMemory(const char *filename, unsigned char **out)
 
 -(NSString*) removeSuffixFromFile:(NSString*) path
 {
-	NSString *withoutSuffix = [_removeSuffixCache objectForKey:path];
+    __block NSString *withoutSuffix = nil;
+    dispatch_sync(_syncQueue, ^{
+        withoutSuffix = [[_removeSuffixCache objectForKey:path] copy];
+    });
+    [withoutSuffix autorelease];
 	if( withoutSuffix )
 		return withoutSuffix;
 	

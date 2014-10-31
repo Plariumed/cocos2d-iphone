@@ -138,6 +138,21 @@ static CDBufferManager *bufferManager = nil;
 	}
 }
 
+- (float)durationOfFile:(NSString*)filePath
+{
+    return [self durationOfFile:filePath create:NO];
+}
+
+- (float)durationOfFile:(NSString*)filePath create:(BOOL)create
+{
+    int soundId = [bufferManager bufferForFile:filePath create:create];
+    if (soundId != kCDNoBuffer) {
+        return [soundEngine bufferDurationInSeconds:soundId];
+    } else {
+        return -1;
+    }
+}
+
 -(void) stopEffect:(ALuint) soundId {
 	[soundEngine stopSound:soundId];
 }

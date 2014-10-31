@@ -84,6 +84,10 @@
 /** Gets a CDSoundSource object set up to play the specified file. */
 -(CDSoundSource *) soundSourceForFile:(NSString*) filePath;
 
+- (float)durationOfFile:(NSString*)filePath;
+
+- (float)durationOfFile:(NSString*)filePath create:(BOOL)create;
+
 /** Shuts down the shared audio engine instance so that it can be reinitialised */
 +(void) end;
 

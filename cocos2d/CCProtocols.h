@@ -154,7 +154,10 @@
 @class UIAccelerometer;
 @protocol CCAccelerometerDelegate <NSObject>
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 @optional
 - (void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration;
+#pragma GCC diagnostic pop
 @end
 #endif // __CC_PLATFORM_IOS

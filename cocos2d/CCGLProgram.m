@@ -153,7 +153,7 @@ const NSString* extensionStr = @EXTENSION_STRING;;
     // BEGIN workaround for Xcode 7 bug
     BOOL hasExtension = NO;
     NSString *sourceStr = [NSString stringWithUTF8String:source];
-    if([sourceStr containsString:extensionStr]) {
+    if([sourceStr rangeOfString:extensionStr].location != NSNotFound) {
         hasExtension = YES;
         NSArray *strs = [sourceStr componentsSeparatedByString:extensionStr];
         assert(strs.count == 2);
